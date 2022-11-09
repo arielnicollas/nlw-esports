@@ -1,11 +1,14 @@
-import { MagnifyingGlassPlus } from "phosphor-react"
-
+import React from "react";
 import { useState, useEffect } from "react";
+import * as Dialog from '@radix-ui/react-dialog'
 
 import './styles/main.css';
 
 import logoImg from './assets/logo-nlw-esports.svg';
 import { GameBanner } from "./components/GameBanner";
+import CreatedAdBanner  from "./components/CreatedAdBanner"
+
+
 
 
 function App() {
@@ -23,11 +26,13 @@ function App() {
 
   useEffect(() => {
     fetch('http://localhost:3333/games')
-    .then(response => response.json())
-    .then(data => {
-      setGames(data)
-    })
+      .then(response => response.json())
+      .then(data => {
+        setGames(data)
+      })
   }, [])
+
+  const [open, setOpen] = React.useState(false);
 
   return (
     <div className="max-w-[1344px] mx-auto flex flex-col items-center my-20">
@@ -40,17 +45,15 @@ function App() {
       <div className="grid grid-cols-6 gap-6 mt-16">
 
         {games.map(game => {
-          return(
+          return (
             <GameBanner
-            title={game.title}
-             bannerUrl={game.bannerUrl}
-             adsCount={game._count.ads} /> 
+              key={game.id}
+              title={game.title}
+              bannerUrl={game.bannerUrl}
+              adsCount={game._count.ads} />
           )
         })}
 
-        
-      
-        
 
       </div>
 
@@ -61,10 +64,27 @@ function App() {
             <span className="text-zinc-400">Publique um anúncio para encontrar novos players!</span>
           </div>
 
-          <button className='py-3 px-4 bg-violet-500 hover:bg-violet-600 text-white rounded flex items-center gap-3'>
-            <MagnifyingGlassPlus size={24} />
-            Publicar anúncio
-          </button>
+          <Dialog.Root>
+            <CreatedAdBanner />
+
+            <Dialog.Portal>
+              <Dialog.Overlay className="bg-black/60 inset-0 fixed ">
+
+                <Dialog.Content>
+
+                  <Dialog.Title>Publique seu Anúncio</Dialog.Title>
+
+                  <Dialog.Content>
+                    sahiashiuas
+                  </Dialog.Content>
+
+                </Dialog.Content>
+
+
+              </Dialog.Overlay>
+            </Dialog.Portal>
+          </Dialog.Root>
+
 
         </div>
       </div>
